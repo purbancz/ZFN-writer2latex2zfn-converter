@@ -11,49 +11,16 @@ public class App {
 
 		TexParser parser = new TexParser();
 		SaveFile saver = new SaveFile();
-		PreambleCleaner preambleCleaner = new PreambleCleaner();
+		DummyLinesCleaner linesCleaner = new DummyLinesCleaner();
+		DummyCharactersCleaner charCleaner = new DummyCharactersCleaner();
 
 		ArrayList<String> texLines = parser.parseTexFile(fileName);
 
-		texLines = preambleCleaner.cleanPreamble(texLines);
+		texLines = linesCleaner.cleanDummyLines(texLines);
+		
+		charCleaner.clearDummyCharacters(texLines);
 
-		for (int i = 0; i < texLines.size(); i++) {
 
-			String s = texLines.get(i).trim().replaceAll(" +", " ");
-
-			s = s.replace("\\ ", "");
-
-			s = s.replace("„", ",,");
-			s = s.replace("”", "'',");
-			s = s.replace("’", "',");
-			s = s.replace(" s. ", " s.~");
-			s = s.replace(" ss. ", " ss.~");
-			s = s.replace(" t. ", " t.~");
-			s = s.replace(" r. ", "~r.");
-			s = s.replace(" }", "} ");
-			s = s.replace("{ ", " {");
-			s = s.replace(" – ", " -- ");
-			s = s.replaceAll("(\\s)([a-z])\\s", "$1$2~");
-//			s = s.replaceAll("([\\r\\n]+)([A-Z])\\s", "$1$2~");
-//			s = s.replaceAll("\\{\\\\[^\\{]*", "Dupa");
-			
-			
-//			s = s.replaceAll("\\\\usepackage(\\[\\S+|,)?\\{\\S+\\}", "Dupa");
-
-//			String s = texLines.get(i).replaceAll("^ +| +$|( )+", "$1");
-
-//			while (!s.isEmpty() && s.startsWith(" ")) {
-//				s = s.substring(1);
-//			}
-
-//			while (!s.isEmpty() && s.startsWith("\\ ")) {
-//				s = s.substring(2);
-//			}
-
-			if (texLines.get(i) != s) {
-				texLines.set(i, s);
-			}
-		}
 
 		for (String s : texLines) {
 			System.out.println(s);
