@@ -1,6 +1,8 @@
 package main.java;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DummyCharactersCleaner {
 
@@ -20,35 +22,52 @@ public class DummyCharactersCleaner {
 			s = s.replace(" r. ", "~r.");
 			s = s.replace(" – ", " -- ");
 			s = s.replace("\\par", "");
-			
+
+			s = s.replace("\\textbf{ }", " ");
+			s = s.replace("\\textit{ }", " ");
+			s = s.replace("\\textbf{}", "");
+			s = s.replace("\\textit{}", "");
+
+			s = s.trim().replaceAll(" +", " ");
+
 			s = s.replaceAll("(\\s)([a-zA-Z])\\s", "$1$2~");
 			s = s.replaceAll("^([a-zA-Z])\\s", "$1~");
+
+			s = s.replaceAll("\\\\[a-zA-Z]{1,}\\{\\s?\\}", "");
 			s = s.replaceAll("(\\\\[sub]{0,}section)(\\[.{1,}\\])\\{(\\s?\\d\\.\\s)?(.{1,})\\}", "$1\\{$4\\}");
-			
-			s = s.replaceAll("(\\s)(\\})", "$2$1");
-			s = s.replace("{ ", " {");
 
-//			s = s.replaceAll("(\\\\[sub]{0,}section)(\\[.{1,}\\])(\\{.{1,}\\})", "$1$3");
-//			s = s.replaceAll("([\\r\\n]+)([A-Z])\\s", "$1$2~");
-//			s = s.replaceAll("\\{\\\\[^\\{]*", "Dupa");
+			s = clearleftBracket("textit", s);
+			s = clearRightBracket("textit", s);
+			s = clearleftBracket("textbf", s);
+			s = clearRightBracket("textbf", s);
 
-//			s = s.replaceAll("\\\\usepackage(\\[\\S+|,)?\\{\\S+\\}", "Dupa");
+			s = s.trim().replaceAll(" +", " ");
 
-//			String s = texLines.get(i).replaceAll("^ +| +$|( )+", "$1");
+			texLines.set(i, s);
 
-//			while (!s.isEmpty() && s.startsWith(" ")) {
-//				s = s.substring(1);
-//			}
-
-//			while (!s.isEmpty() && s.startsWith("\\ ")) {
-//				s = s.substring(2);
-//			}
-
-			if (texLines.get(i) != s) {
-				texLines.set(i, s);
-			}
 		}
 
+	}
+
+
+	private String clearleftBracket(String enviroment, String text) {
+		String regex = "(\\\\" + enviroment + "\\{)([^a-z\\\\A-Z])";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(text);
+		while (matcher.find()) {
+			text = text.replaceAll(regex, "$2$1");
+		}
+		return text;
+	}
+
+	private String clearRightBracket(String enviroment, String text) {
+		String regex = "(\\\\" + enviroment + "\\{.{0,}?)([^a-zA-Z])(\\})";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(text);
+		while (matcher.find()) {
+			text = text.replaceAll(regex, "$1$3$2");
+		}
+		return text;
 	}
 
 }
