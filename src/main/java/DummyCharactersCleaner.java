@@ -30,11 +30,14 @@ public class DummyCharactersCleaner {
 
 			s = s.trim().replaceAll(" +", " ");
 
+			//line widows
 			s = s.replaceAll("(\\s)([a-zA-Z])\\s", "$1$2~");
 			s = s.replaceAll("^([a-zA-Z])\\s", "$1~");
 
+			//dummy styles
 			s = s.replaceAll("\\\\[a-zA-Z]{1,}\\{\\s?\\}", "");
-			s = s.replaceAll("(\\\\[sub]{0,}section)(\\[.{1,}\\])\\{(\\s?\\d\\.\\s)?(.{1,})\\}", "$1\\{$4\\}");
+			//section name cleaning
+			s = s.replaceAll("(\\\\[sub]{0,}section)(\\[.{1,}\\])?\\{(\\s?\\d\\.\\s)?(.{1,})\\}", "$1\\{$4\\}");
 
 			s = clearleftBracket("textit", s);
 			s = clearRightBracket("textit", s);
@@ -51,20 +54,22 @@ public class DummyCharactersCleaner {
 
 
 	private String clearleftBracket(String enviroment, String text) {
-		String regex = "(\\\\" + enviroment + "\\{)([^a-z\\\\A-Z])";
+		String regex = "(\\\\" + enviroment + "\\{)([^\\p{L}\\\\])";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
+			text = text.replaceAll(regex, "$2$1");
 			text = text.replaceAll(regex, "$2$1");
 		}
 		return text;
 	}
 
 	private String clearRightBracket(String enviroment, String text) {
-		String regex = "(\\\\" + enviroment + "\\{.{0,}?)([^a-zA-Z])(\\})";
+		String regex = "(\\\\" + enviroment + "\\{.{0,}?)([^\\p{L}0-9])(\\})";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(text);
 		while (matcher.find()) {
+			text = text.replaceAll(regex, "$1$3$2");
 			text = text.replaceAll(regex, "$1$3$2");
 		}
 		return text;
