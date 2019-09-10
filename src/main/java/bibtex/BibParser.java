@@ -61,7 +61,6 @@ public class BibParser {
 						}
 					}
 				}
-				
 				listBibEntries.add(entry);
 			}
 		}

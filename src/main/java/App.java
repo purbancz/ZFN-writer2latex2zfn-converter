@@ -4,14 +4,15 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import main.java.bibtex.BibEntries;
+import main.java.bibtex.BibFinder;
 import main.java.bibtex.BibParser;
 
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String fileName = "res/Kurkowski-org4.tex";
-		String newFile = "res/Kurkowski-org4-PU.tex";
+		String texFile = "res/Kurkowski-org4.tex";
 		String bibFile = "res/Kurkowski.bib";
+		String newFile = "res/Kurkowski-org4-PU.tex";
 		
 		
 
@@ -20,20 +21,23 @@ public class App {
 		DummyLinesCleaner linesCleaner = new DummyLinesCleaner();
 		DummyCharactersCleaner charCleaner = new DummyCharactersCleaner();
 		BibParser bibParser = new BibParser();
+		BibFinder bibFinder = new BibFinder();
 		
 		ArrayList<BibEntries> bibEntries = bibParser.parseBibFile(bibFile);
 
-		ArrayList<String> texLines = parser.parseTexFile(fileName);
+		ArrayList<String> texLines = parser.parseTexFile(texFile);
 
 		texLines = linesCleaner.cleanDummyLines(texLines);
 		
 		charCleaner.clearDummyCharacters(texLines);
+		
+		texLines = bibFinder.findBibReferences(texLines);
 
 
 
-//		for (String s : texLines) {
-//			System.out.println(s);
-//		}
+		for (String s : texLines) {
+			System.out.println(s);
+		}
 		
 
 
@@ -41,10 +45,9 @@ public class App {
 		
 		
 		
-		for (BibEntries entry : bibEntries) {
-			System.out.println(entry);
-			
-		}
+//		for (BibEntries entry : bibEntries) {
+//			System.out.println(entry);
+//		}
 
 	}
 
