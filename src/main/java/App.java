@@ -45,10 +45,25 @@ public class App {
 		
 		
 		
-//		for (BibEntries entry : bibEntries) {
-//			System.out.println(entry);
-//		}
+		for (BibEntries entry : bibEntries) {
+			System.out.println(entry);
+		}
+		
+		String dupa = "mloda Dupa";
+		System.out.println(dupa.substring(firstUpperCase(dupa)));
+		
+		
 
+	}
+	
+	
+	public static int firstUpperCase(String str) {        
+	    for(int i=0; i<=str.length()-1; i++) {
+	        if(Character.isUpperCase(str.charAt(i))) {
+	            return i;
+	        }
+	    }
+	    return 0;
 	}
 
 }

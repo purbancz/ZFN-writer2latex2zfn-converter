@@ -35,6 +35,7 @@ public class BibParser {
 
 		for (int i = 0; i < bibLines.size(); i++) {
 			line = bibLines.get(i).trim();
+//			line = Normalizer.normalize(bibLines.get(i).trim(), Normalizer.Form.NFKD).replaceAll("[\\p{M}]", "");
 			if (line.startsWith("@")) {
 				String[] keyLine = line.split("\\{");
 				lastEntryStartLine = i;

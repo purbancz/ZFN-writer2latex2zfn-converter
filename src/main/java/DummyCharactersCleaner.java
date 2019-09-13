@@ -32,12 +32,17 @@ public class DummyCharactersCleaner {
 
 			//line widows
 			s = s.replaceAll("(\\s)([a-zA-Z])\\s", "$1$2~");
+			s = s.replaceAll("(\\{)([a-zA-Z])\\s", "$1$2~");
 			s = s.replaceAll("^([a-zA-Z])\\s", "$1~");
 
 			//dummy styles
 			s = s.replaceAll("\\\\[a-zA-Z]{1,}\\{\\s?\\}", "");
 			//section name cleaning
 			s = s.replaceAll("(\\\\[sub]{0,}section)(\\[.{1,}\\])?\\{(\\s?\\d\\.\\s)?(.{1,})\\}", "$1\\{$4\\}");
+			
+			//spaces before commas and periods
+			s = s.replaceAll("(\\s)([\\.,?!;]{1}|'')(\\s)", "$2$3");
+			s = s.replaceAll("(,,)(\\s)", "$1");
 
 			s = clearleftBracket("textit", s);
 			s = clearRightBracket("textit", s);

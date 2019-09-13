@@ -9,7 +9,6 @@ public class BibEntries {
 	private String year;
 
 	public BibEntries(String key, String author, String year) {
-		super();
 		this.key = key;
 		this.author = author;
 		this.year = year;
