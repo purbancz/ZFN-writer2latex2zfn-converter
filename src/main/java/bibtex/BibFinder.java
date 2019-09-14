@@ -12,13 +12,14 @@ public class BibFinder {
 	//
 
 	ArrayList<String> texBibLines = new ArrayList<>();
-	
 
 	String regex = "(\\\\label\\{ref:RND[a-zA-Z0-9]{10}\\})(\\()([^\\)]{4,})(\\))([.,:;?!])?";
 	Pattern pattern = Pattern.compile(regex);
 
 	public ArrayList<String> findBibReferences(ArrayList<String> texLines) {
 		for (int i = 0; i < texLines.size(); i++) {
+
+			String prevLine = "";
 
 			String par = texLines.get(i);
 			Matcher matcher = pattern.matcher(par);
@@ -27,16 +28,18 @@ public class BibFinder {
 			if (!matcher.find()) {
 				texBibLines.add(par);
 			} else {
-				texBibLines.add(par.substring(0, matcher.start()));
+				prevLine = par.substring(0, matcher.start() - 1);
+				texBibLines.add(prevLine);
 				texBibLines.add("%" + matcher.group());
-				texBibLines.add(createBibEntry(matcher.group(3)));
-				texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
+				texBibLines.add(createBibEntry(matcher.group(3), lastWord(prevLine)) + deNullifier(matcher.group(5)) + "%");
+//				texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 				temporaryMatcherEnd = matcher.end();
 				while (matcher.find()) {
+					prevLine = par.substring(temporaryMatcherEnd, matcher.start() - 1);
 					texBibLines.add(par.substring(temporaryMatcherEnd, matcher.start()));
 					texBibLines.add("%" + matcher.group());
-					texBibLines.add(createBibEntry(matcher.group(3)));
-					texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
+					texBibLines.add(createBibEntry(matcher.group(3), lastWord(prevLine)) + deNullifier(matcher.group(5)) + "%");
+//					texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 					temporaryMatcherEnd = matcher.end();
 				}
 				texBibLines.add(par.substring(temporaryMatcherEnd, par.length()));
@@ -46,11 +49,11 @@ public class BibFinder {
 		return texBibLines;
 	}
 
-	public String createBibEntry(String bibEntryRaw) {
-		
+	public String createBibEntry(String bibEntryRaw, String oneWordBefore) {
+
 		ArrayList<BibReferences> bibRefs = new ArrayList<>();
 
-		String[] bibEntriesText = bibEntryRaw.split("; ");
+		String[] bibReferecesText = bibEntryRaw.split("; ");
 		String bibTexFormula = "";
 
 		String author = "";
@@ -58,17 +61,17 @@ public class BibFinder {
 
 		BibReferences bibRef = null;
 
-		if (bibEntriesText.length == 1) {
+		if (bibReferecesText.length == 1) {
 			bibTexFormula = "\\parencite";
 		} else {
 			bibTexFormula = "\\parencites";
 		}
 
-		for (int i = 0; i < bibEntriesText.length; i++) {
+		for (int i = 0; i < bibReferecesText.length; i++) {
 			author = "";
 			year = "";
 			bibRef = new BibReferences("", "", "");
-			String[] bibSingleTextEntry = bibEntriesText[i].split(", ");
+			String[] bibSingleTextEntry = bibReferecesText[i].split(", ");
 
 			for (String subs : bibSingleTextEntry) {
 
@@ -96,9 +99,10 @@ public class BibFinder {
 //							+ Normalizer.normalize(subs, Normalizer.Form.NFKD).replaceAll("[\\p{M}]", "");
 				}
 			}
-			
+
 			if (author.isEmpty()) {
 				bibTexFormula = bibTexFormula + "*";
+				author = oneWordBefore;
 			}
 
 			for (BibEntries bibEntry : bibEntries) {
@@ -109,14 +113,9 @@ public class BibFinder {
 			bibRefs.add(bibRef);
 		}
 
-//		if (author.isEmpty()) {
-//			bibTexFormula = bibTexFormula + "*";
-//		}
-
 		for (BibReferences bibFinalRef : bibRefs) {
 			bibTexFormula = bibTexFormula + bibFinalRef.toString();
 		}
-
 
 		return bibTexFormula;
 	}
@@ -135,6 +134,19 @@ public class BibFinder {
 			if (!word.contains(k))
 				return false;
 		return true;
+	}
+
+	public String lastWord(String word) {
+		return word.substring(word.lastIndexOf(" ") + 1);
+	}
+	
+	public String deNullifier(String word) {
+		if (word == null) {
+			return "";
+		}
+		else {
+			return word;
+		}
 	}
 
 }
