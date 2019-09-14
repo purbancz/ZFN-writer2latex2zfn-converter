@@ -10,9 +10,9 @@ import main.java.bibtex.BibParser;
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String texFile = "res/Kurkowski-org4.tex";
-		String bibFile = "res/Kurkowski.bib";
-		String newFile = "res/Kurkowski-org4-PU.tex";
+		String texFile = "res/Turek2.tex";
+		String bibFile = "res/Turek.bib";
+		String newFile = "res/Turek2-PU.tex";
 
 		TexParser parser = new TexParser();
 		SaveFile saver = new SaveFile();
@@ -41,6 +41,11 @@ public class App {
 			System.out.println(entry);
 		}
 
+		
+		char a = 'a';
+		int aInt = a - 97;
+		System.out.println(aInt);
+		
 	}
 
 }

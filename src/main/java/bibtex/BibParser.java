@@ -44,11 +44,11 @@ public class BibParser {
 			}
 			if (line.startsWith("author")) {
 				String[] keyAuthor = line.split("\\{");
-				entry.setAuthor(keyAuthor[1].substring(0, keyAuthor[1].length() - 2));
+				entry.setAuthor(keyAuthor[1].substring(0, keyAuthor[1].length() - 1).replace("}", ""));
 			}
 			if (line.startsWith("year")) {
 				String[] keyYear = line.split("\\{");
-				entry.setYear(keyYear[1].substring(0, keyYear[1].length() - 2));
+				entry.setYear(keyYear[1].replaceAll("\\D+",""));
 			}
 			if (line.equals("}")) {
 				if (entry.getAuthor() == null || entry.getAuthor() == "") {
@@ -57,7 +57,7 @@ public class BibParser {
 						line = bibLines.get(y).trim();
 						if (line.startsWith("editor")) {
 							String[] keyAuthor = line.split("\\{");
-							entry.setAuthor(keyAuthor[1].substring(0, keyAuthor[1].length() - 2));
+							entry.setAuthor(keyAuthor[1].substring(0, keyAuthor[1].length() - 1).replace("}", ""));
 							break;
 						}
 					}

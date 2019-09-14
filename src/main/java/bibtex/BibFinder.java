@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class BibFinder {
 	//
-	String bibFile = "res/Kurkowski.bib";
+	String bibFile = "res/Turek.bib";
 	BibParser bibParser = new BibParser();
 	ArrayList<BibEntries> bibEntries = bibParser.parseBibFile(bibFile);
 	//
@@ -31,14 +31,16 @@ public class BibFinder {
 				prevLine = par.substring(0, matcher.start() - 1);
 				texBibLines.add(prevLine);
 				texBibLines.add("%" + matcher.group());
-				texBibLines.add(createBibEntry(matcher.group(3), lastWord(prevLine)) + deNullifier(matcher.group(5)) + "%");
+				texBibLines.add(
+						createBibEntry(matcher.group(3), lastWord(prevLine)) + deNullifier(matcher.group(5)) + "%");
 //				texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 				temporaryMatcherEnd = matcher.end();
 				while (matcher.find()) {
 					prevLine = par.substring(temporaryMatcherEnd, matcher.start() - 1);
 					texBibLines.add(par.substring(temporaryMatcherEnd, matcher.start()));
 					texBibLines.add("%" + matcher.group());
-					texBibLines.add(createBibEntry(matcher.group(3), lastWord(prevLine)) + deNullifier(matcher.group(5)) + "%");
+					texBibLines.add(
+							createBibEntry(matcher.group(3), lastWord(prevLine)) + deNullifier(matcher.group(5)) + "%");
 //					texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 					temporaryMatcherEnd = matcher.end();
 				}
@@ -99,17 +101,34 @@ public class BibFinder {
 //							+ Normalizer.normalize(subs, Normalizer.Form.NFKD).replaceAll("[\\p{M}]", "");
 				}
 			}
+			
+			//end of loop
 
 			if (author.isEmpty()) {
 				bibTexFormula = bibTexFormula + "*";
 				author = oneWordBefore;
 			}
 
-			for (BibEntries bibEntry : bibEntries) {
-				if (areAuthors(author.split(", "), bibEntry.getAuthor()) && bibEntry.getYear().equals(year)) {
-					bibRef.setKey(bibEntry.getKey());
-				}
+//			for (BibEntries bibEntry : bibEntries) {
+//				if (areAuthors(author.split(", "), bibEntry.getAuthor()) && bibEntry.getYear().equals(year)) {
+//					bibRef.setKey(bibEntry.getKey());
+//				}
+//			}
+			
+			if (year.length()>4 && Character.isLetter(year.charAt(4))) {
+//				int manyInOneYear = year.charAt(4) - 97;
+				year = year.substring(0, year.length() - 1);
 			}
+
+			while (bibRef.getKey().isEmpty() || author.length() > 1) {
+				for (BibEntries bibEntry : bibEntries) {
+					if (areAuthors(author.split(", "), bibEntry.getAuthor()) && bibEntry.getYear().equals(year)) {
+						bibRef.setKey(bibEntry.getKey());
+					}
+				}
+				author = author.substring(0, author.length() - 1);
+			}
+
 			bibRefs.add(bibRef);
 		}
 
@@ -139,12 +158,11 @@ public class BibFinder {
 	public String lastWord(String word) {
 		return word.substring(word.lastIndexOf(" ") + 1);
 	}
-	
+
 	public String deNullifier(String word) {
 		if (word == null) {
 			return "";
-		}
-		else {
+		} else {
 			return word;
 		}
 	}
