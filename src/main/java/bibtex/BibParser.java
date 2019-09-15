@@ -46,6 +46,10 @@ public class BibParser {
 				String[] keyAuthor = line.split("\\{");
 				entry.setAuthor(keyAuthor[1].substring(0, keyAuthor[1].length() - 1).replace("}", ""));
 			}
+			if (line.startsWith("title")) {
+				String[] keyTitle = line.split("=");
+				entry.setTitle(keyTitle[1].replaceAll("[^\\p{L}0-9\\s]","").trim());
+			}
 			if (line.startsWith("year")) {
 				String[] keyYear = line.split("\\{");
 				entry.setYear(keyYear[1].replaceAll("\\D+",""));

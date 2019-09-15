@@ -2,6 +2,7 @@ package main.java;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import main.java.bibtex.BibEntries;
 import main.java.bibtex.BibFinder;
@@ -10,9 +11,9 @@ import main.java.bibtex.BibParser;
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String texFile = "res/Turek2.tex";
-		String bibFile = "res/Turek.bib";
-		String newFile = "res/Turek2-PU.tex";
+		String texFile = "res/Lobinski-org3.tex";
+		String bibFile = "res/Lubinski.bib";
+		String newFile = "res/Lobinski-org3-PU.tex";
 
 		TexParser parser = new TexParser();
 		SaveFile saver = new SaveFile();
@@ -36,15 +37,15 @@ public class App {
 		}
 
 		saver.rewriteFile(newFile, texLines);
+		
+		
 
 		for (BibEntries entry : bibEntries) {
 			System.out.println(entry);
 		}
 
 		
-		char a = 'a';
-		int aInt = a - 97;
-		System.out.println(aInt);
+		
 		
 	}
 
