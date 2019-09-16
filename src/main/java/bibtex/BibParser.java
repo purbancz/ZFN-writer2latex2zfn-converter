@@ -65,6 +65,10 @@ public class BibParser {
 							break;
 						}
 					}
+					
+					if (entry.getAuthor() == null || entry.getAuthor() == "") {
+						entry.setAuthor(entry.getTitle());
+					}
 				}
 				listBibEntries.add(entry);
 			}

@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class BibFinder {
 	//
-	String bibFile = "res/Lubinski.bib";
+	String bibFile = "res/Rybka.bib";
 	BibParser bibParser = new BibParser();
 	ArrayList<BibEntries> bibEntries = bibParser.parseBibFile(bibFile);
 	//
@@ -106,42 +106,41 @@ public class BibFinder {
 //							+ Normalizer.normalize(subs, Normalizer.Form.NFKD).replaceAll("[\\p{M}]", "");
 				}
 			}
-			
-			//end of loop
+
+			// end of loop
 
 			if (author.isEmpty()) {
 				bibTexFormula = bibTexFormula + "*";
 				author = oneWordBefore;
 			}
 
-//			for (BibEntries bibEntry : bibEntries) {
-//				if (areAuthors(author.split(", "), bibEntry.getAuthor()) && bibEntry.getYear().equals(year)) {
-//					bibRef.setKey(bibEntry.getKey());
-//				}
-//			}
-			
-			if (year.length()>4 && Character.isLetter(year.charAt(4))) {
+			if (year.length() > 4 && Character.isLetter(year.charAt(4))) {
 				manyInOneYear = year.charAt(4) - 97;
 				year = year.substring(0, year.length() - 1);
 			}
 
-			while (aBCEtnries.isEmpty() || author.length() > 1) {
+			while (aBCEtnries.isEmpty() && author.length() > 0) {
 				for (BibEntries bibEntry : bibEntries) {
 					if (areAuthors(author.split(", "), bibEntry.getAuthor()) && bibEntry.getYear().equals(year)) {
-//						bibRef.setKey(bibEntry.getKey());
 						aBCEtnries.add(bibEntry);
 					}
 				}
 				author = author.substring(0, author.length() - 1);
 			}
-			
+
 			List<BibEntries> sortedABCList = new ArrayList<>(aBCEtnries);
 			sortedABCList.sort(Comparator.comparing(BibEntries::getTitle));
-			
-			bibRef.setKey(sortedABCList.get(manyInOneYear).getKey());
 
+			if (sortedABCList.isEmpty()) {
+				bibRef.setKey("");
+			} else {
+				bibRef.setKey(sortedABCList.get(manyInOneYear).getKey());
+			}
+			
 			bibRefs.add(bibRef);
 		}
+
+		// end of loop
 
 		for (BibReferences bibFinalRef : bibRefs) {
 			bibTexFormula = bibTexFormula + bibFinalRef.toString();
@@ -167,7 +166,7 @@ public class BibFinder {
 	}
 
 	public String lastWord(String word) {
-		return word.substring(word.lastIndexOf(" ") + 1);
+		return word.substring(word.lastIndexOf(" ") + 1).replaceAll("^.*?(\\w+)\\W*$", "$1");
 	}
 
 	public String deNullifier(String word) {

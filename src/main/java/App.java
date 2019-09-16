@@ -11,9 +11,9 @@ import main.java.bibtex.BibParser;
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String texFile = "res/Lobinski-org3.tex";
-		String bibFile = "res/Lubinski.bib";
-		String newFile = "res/Lobinski-org3-PU.tex";
+		String texFile = "res/Rybka.tex";
+		String bibFile = "res/Rybka.bib";
+		String newFile = "res/Rybka-PU.tex";
 
 		TexParser parser = new TexParser();
 		SaveFile saver = new SaveFile();
@@ -44,7 +44,7 @@ public class App {
 			System.out.println(entry);
 		}
 
-		
+
 		
 		
 	}

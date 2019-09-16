@@ -19,14 +19,11 @@ public class DummyCharactersCleaner {
 			s = s.replace(" s. ", " s.~");
 			s = s.replace(" ss. ", " ss.~");
 			s = s.replace(" t. ", " t.~");
+			s = s.replace(" rozdz. ", " rozdz.~");
 			s = s.replace(" r. ", "~r.");
 			s = s.replace(" – ", " -- ");
 			s = s.replace("\\par", "");
 
-			s = s.replace("\\textbf{ }", " ");
-			s = s.replace("\\textit{ }", " ");
-			s = s.replace("\\textbf{}", "");
-			s = s.replace("\\textit{}", "");
 
 			s = s.trim().replaceAll(" +", " ");
 
@@ -51,6 +48,12 @@ public class DummyCharactersCleaner {
 
 			s = s.trim().replaceAll(" +", " ");
 
+			s = s.replace("\\textbf{ }", " ");
+			s = s.replace("\\textit{ }", " ");
+			s = s.replace("\\textbf{}", "");
+			s = s.replace("\\textit{}", "");
+			
+			
 			texLines.set(i, s);
 
 		}
@@ -62,19 +65,19 @@ public class DummyCharactersCleaner {
 		String regex = "(\\\\" + enviroment + "\\{)([^\\p{L}\\\\])";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(text);
+		text = text.replaceAll(regex, "$2$1");
 		while (matcher.find()) {
-			text = text.replaceAll(regex, "$2$1");
 			text = text.replaceAll(regex, "$2$1");
 		}
 		return text;
 	}
 
 	private String clearRightBracket(String enviroment, String text) {
-		String regex = "(\\\\" + enviroment + "\\{.{0,}?)([^\\p{L}0-9])(\\})";
+		String regex = "(\\\\" + enviroment + "\\{.{0,}?)([^\\p{L}0-9\\.])(\\})";
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(text);
+		text = text.replaceAll(regex, "$1$3$2");
 		while (matcher.find()) {
-			text = text.replaceAll(regex, "$1$3$2");
 			text = text.replaceAll(regex, "$1$3$2");
 		}
 		return text;
