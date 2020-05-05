@@ -2,7 +2,6 @@ package main.java;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import main.java.bibtex.BibEntries;
 import main.java.bibtex.BibFinder;
