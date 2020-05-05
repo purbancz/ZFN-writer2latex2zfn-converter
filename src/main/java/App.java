@@ -6,6 +6,10 @@ import java.util.ArrayList;
 import main.java.bibtex.BibEntries;
 import main.java.bibtex.BibFinder;
 import main.java.bibtex.BibParser;
+import main.java.cleaners.DummyCharactersCleaner;
+import main.java.cleaners.DummyLinesCleaner;
+import main.java.utility.SaveFile;
+import main.java.utility.TexParser;
 
 public class App {
 
