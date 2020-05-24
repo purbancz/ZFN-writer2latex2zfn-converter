@@ -14,9 +14,9 @@ import main.java.utility.TexParser;
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String texFile = "res/Rybka.tex";
-		String bibFile = "res/Rybka.bib";
-		String newFile = "res/Rybka-PU.tex";
+		String texFile = "res/adam.tex";
+		String bibFile = "res/adam-ktostam.bib";
+		String newFile = "res/adam-PU.tex";
 
 		TexParser parser = new TexParser();
 		SaveFile saver = new SaveFile();
@@ -33,7 +33,8 @@ public class App {
 
 		charCleaner.clearDummyCharacters(texLines);
 
-		texLines = bibFinder.findBibReferences(texLines);
+		texLines = bibFinder.findBibReferences(texLines, bibEntries);
+//		texLines = bibFinder.findBibReferences(texLines);
 
 		for (String s : texLines) {
 			System.out.println(s);

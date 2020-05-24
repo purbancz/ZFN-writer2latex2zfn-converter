@@ -18,6 +18,7 @@ public class DummyLinesCleaner {
 			
 			if (s.startsWith("\\documentclass") || s.startsWith("\\usepackage") || s.startsWith("\\newcommand")
 					|| s.startsWith("\\renewcommand") || s.startsWith("\\setlength") || s.startsWith("\\hypersetup")
+					|| s.startsWith("\\makeatletter") || s.startsWith("\\makeatother")
 					|| s.startsWith("%")|| s.startsWith("\\providecommand")) {
 				egg = false;
 			}

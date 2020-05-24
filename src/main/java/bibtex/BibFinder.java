@@ -8,18 +8,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BibFinder {
-	//
-	String bibFile = "res/Rybka.bib";
-	BibParser bibParser = new BibParser();
-	ArrayList<BibEntries> bibEntries = bibParser.parseBibFile(bibFile);
-	//
+//	
+//	String bibFile = "res/adam-ktostam.bib";
+//	BibParser bibParser = new BibParser();
+//	ArrayList<BibEntries> bibEntries = bibParser.parseBibFile(bibFile);
+//	
 
 	ArrayList<String> texBibLines = new ArrayList<>();
 
 	String regex = "(\\\\label\\{ref:RND[a-zA-Z0-9]{10}\\})(\\()([^\\)]{4,})(\\))([.,:;?!])?";
 	Pattern pattern = Pattern.compile(regex);
 
-	public ArrayList<String> findBibReferences(ArrayList<String> texLines) {
+	public ArrayList<String> findBibReferences(ArrayList<String> texLines, ArrayList<BibEntries> bibEntries) {
 		for (int i = 0; i < texLines.size(); i++) {
 
 			String prevLine = "";
@@ -35,7 +35,7 @@ public class BibFinder {
 				texBibLines.add(prevLine);
 				texBibLines.add("%" + matcher.group());
 				texBibLines.add(
-						createBibEntry(matcher.group(3), lastWord(prevLine)) + deNullifier(matcher.group(5)) + "%");
+						createBibEntry(matcher.group(3), lastWord(prevLine), bibEntries) + deNullifier(matcher.group(5)) + "%");
 //				texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 				temporaryMatcherEnd = matcher.end();
 				while (matcher.find()) {
@@ -43,7 +43,7 @@ public class BibFinder {
 					texBibLines.add(par.substring(temporaryMatcherEnd, matcher.start()));
 					texBibLines.add("%" + matcher.group());
 					texBibLines.add(
-							createBibEntry(matcher.group(3), lastWord(prevLine)) + deNullifier(matcher.group(5)) + "%");
+							createBibEntry(matcher.group(3), lastWord(prevLine), bibEntries) + deNullifier(matcher.group(5)) + "%");
 //					texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 					temporaryMatcherEnd = matcher.end();
 				}
@@ -54,7 +54,7 @@ public class BibFinder {
 		return texBibLines;
 	}
 
-	public String createBibEntry(String bibEntryRaw, String oneWordBefore) {
+	public String createBibEntry(String bibEntryRaw, String oneWordBefore, ArrayList<BibEntries> bibEntries) {
 
 		ArrayList<BibReferences> bibRefs = new ArrayList<>();
 		HashSet<BibEntries> aBCEtnries = new HashSet<>();
