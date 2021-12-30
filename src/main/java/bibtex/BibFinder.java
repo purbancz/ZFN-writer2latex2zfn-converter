@@ -35,7 +35,10 @@ public class BibFinder {
 				texBibLines.add(prevLine);
 				texBibLines.add("%" + matcher.group());
 				texBibLines.add(
-						createBibEntry(matcher.group(3), lastWord(prevLine), bibEntries) + deNullifier(matcher.group(5)) + "%");
+						createBibEntry(matcher.group(3), lastWord(prevLine), bibEntries)						
+						+ deNullifier(matcher.group(5))
+						+ addSpace(par, matcher.end())
+						+ "%");
 //				texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 				temporaryMatcherEnd = matcher.end();
 				while (matcher.find()) {
@@ -43,7 +46,10 @@ public class BibFinder {
 					texBibLines.add(par.substring(temporaryMatcherEnd, matcher.start()));
 					texBibLines.add("%" + matcher.group());
 					texBibLines.add(
-							createBibEntry(matcher.group(3), lastWord(prevLine), bibEntries) + deNullifier(matcher.group(5)) + "%");
+							createBibEntry(matcher.group(3), lastWord(prevLine), bibEntries)							
+							+ deNullifier(matcher.group(5))
+							+ addSpace(par, matcher.end())
+							+ "%");
 //					texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 					temporaryMatcherEnd = matcher.end();
 				}
@@ -57,7 +63,7 @@ public class BibFinder {
 	public String createBibEntry(String bibEntryRaw, String oneWordBefore, ArrayList<BibEntries> bibEntries) {
 
 		ArrayList<BibReferences> bibRefs = new ArrayList<>();
-		HashSet<BibEntries> aBCEtnries = new HashSet<>();
+		
 		int manyInOneYear = 0;
 
 		String[] bibReferecesText = bibEntryRaw.split("; ");
@@ -75,6 +81,7 @@ public class BibFinder {
 		}
 
 		for (int i = 0; i < bibReferecesText.length; i++) {
+			HashSet<BibEntries> aBCEtnries = new HashSet<>();
 			author = "";
 			year = "";
 			bibRef = new BibReferences("", "", "");
@@ -175,6 +182,17 @@ public class BibFinder {
 		} else {
 			return word;
 		}
+	}
+	
+
+	
+	public String addSpace(String str, int placeSp) {
+		if (placeSp <= str.length()-1 &&
+				Character.isWhitespace(str.charAt(placeSp))) {
+			return " ";
+			} else {
+				return "";
+			}
 	}
 
 }

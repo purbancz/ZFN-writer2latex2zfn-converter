@@ -34,3 +34,11 @@ tmp/
 *~.nib
 local.properties
 .loadpath
+
+
+##########################
+## TeX
+##########################
+*.tex
+*.bib
+*.log

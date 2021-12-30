@@ -14,8 +14,9 @@ public class DummyCharactersCleaner {
 			s = s.replace("\\ ", "");
 
 			s = s.replace("„", ",,");
-			s = s.replace("”", "'',");
-			s = s.replace("’", "',");
+			s = s.replace("”", "''");
+			s = s.replace("’", "'");
+			s = s.replace("“", "``");
 			s = s.replace(" s. ", " s.~");
 			s = s.replace(" ss. ", " ss.~");
 			s = s.replace(" t. ", " t.~");

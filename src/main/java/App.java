@@ -14,9 +14,9 @@ import main.java.utility.TexParser;
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String texFile = "res/adam.tex";
-		String bibFile = "res/adam-ktostam.bib";
-		String newFile = "res/adam-PU.tex";
+		String texFile = "res/krzanowski_exp.tex";
+		String bibFile = "res/krzanowski.bib";
+		String newFile = "res/krzanowski.tex";
 
 		TexParser parser = new TexParser();
 		SaveFile saver = new SaveFile();
