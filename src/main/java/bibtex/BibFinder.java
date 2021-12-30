@@ -142,6 +142,7 @@ public class BibFinder {
 				bibRef.setKey("");
 			} else {
 				bibRef.setKey(sortedABCList.get(manyInOneYear).getKey());
+				manyInOneYear = 0;
 			}
 			
 			bibRefs.add(bibRef);
