@@ -44,7 +44,11 @@ public class BibParser {
 			}
 			if (line.startsWith("author")) {
 				String[] keyAuthor = line.split("\\{");
+				try {
 				entry.setAuthor(keyAuthor[1].substring(0, keyAuthor[1].length() - 1).replace("}", ""));
+				} catch (Exception e) {
+				      System.out.println("Something went wrong: "+entry);
+			    }
 			}
 			if (line.startsWith("title")) {
 				String[] keyTitle = line.split("=");

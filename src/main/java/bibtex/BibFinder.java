@@ -31,25 +31,37 @@ public class BibFinder {
 			if (!matcher.find()) {
 				texBibLines.add(par);
 			} else {
+				try {
 				prevLine = par.substring(0, matcher.start() - 1);
+				} catch (Exception e) {
+				      System.out.println("Something went wrong: "+prevLine+par);
+			    }
 				texBibLines.add(prevLine);
 				texBibLines.add("%" + matcher.group());
+				try {
 				texBibLines.add(
 						createBibEntry(matcher.group(3), lastWord(prevLine), bibEntries)						
 						+ deNullifier(matcher.group(5))
 						+ addSpace(par, matcher.end())
 						+ "%");
+				} catch (Exception e) {
+				      System.out.println("Something went wrong: "+prevLine);
+			    }	
 //				texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 				temporaryMatcherEnd = matcher.end();
 				while (matcher.find()) {
 					prevLine = par.substring(temporaryMatcherEnd, matcher.start() - 1);
 					texBibLines.add(par.substring(temporaryMatcherEnd, matcher.start()));
 					texBibLines.add("%" + matcher.group());
+					try {
 					texBibLines.add(
 							createBibEntry(matcher.group(3), lastWord(prevLine), bibEntries)							
 							+ deNullifier(matcher.group(5))
 							+ addSpace(par, matcher.end())
 							+ "%");
+					} catch (Exception e) {
+					      System.out.println("Something went wrong: "+prevLine);
+				    }
 //					texBibLines.add(matcher.group(3) + matcher.group(5) + "%");
 					temporaryMatcherEnd = matcher.end();
 				}

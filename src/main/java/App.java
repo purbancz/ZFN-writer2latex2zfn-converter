@@ -14,9 +14,9 @@ import main.java.utility.TexParser;
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String texFile = "res/gorazda_exp.tex";
-		String bibFile = "res/gorazda.bib";
-		String newFile = "res/gorazda.tex";
+		String texFile = "res/Dodig-org.tex";
+		String bibFile = "res/Dodig.bib";
+		String newFile = "res/Dodig.tex";
 
 		TexParser parser = new TexParser();
 		SaveFile saver = new SaveFile();
