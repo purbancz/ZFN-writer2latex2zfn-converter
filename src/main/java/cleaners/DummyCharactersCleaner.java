@@ -23,6 +23,7 @@ public class DummyCharactersCleaner {
 			s = s.replace(" rozdz. ", " rozdz.~");
 			s = s.replace(" r. ", "~r.");
 			s = s.replace(" – ", " -- ");
+			s = s.replace("—", "---");
 			s = s.replace("\\par", "");
 
 
