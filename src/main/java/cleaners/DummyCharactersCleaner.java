@@ -26,7 +26,6 @@ public class DummyCharactersCleaner {
 			s = s.replace("—", "---");
 			s = s.replace("\\par", "");
 
-
 			s = s.trim().replaceAll(" +", " ");
 
 			//line widows
@@ -54,6 +53,9 @@ public class DummyCharactersCleaner {
 			s = s.replace("\\textit{ }", " ");
 			s = s.replace("\\textbf{}", "");
 			s = s.replace("\\textit{}", "");
+			
+			s = s.replace("\\footnote{ ", "\\footnote{");
+
 			
 			
 			texLines.set(i, s);

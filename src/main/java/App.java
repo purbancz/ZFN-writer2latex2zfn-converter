@@ -14,9 +14,9 @@ import main.java.utility.TexParser;
 public class App {
 
 	public static void main(String[] args) throws FileNotFoundException {
-		String texFile = "res/Dodig-org.tex";
-		String bibFile = "res/Dodig.bib";
-		String newFile = "res/Dodig.tex";
+		String texFile = "res/Krzanowski-Polak-org-2nd.tex";
+		String bibFile = "res/Krzanowski_Polak.bib";
+		String newTexFile = "res/Krzanowski-Polak-2nd2.tex";
 
 		TexParser parser = new TexParser();
 		SaveFile saver = new SaveFile();
@@ -40,7 +40,7 @@ public class App {
 			System.out.println(s);
 		}
 
-		saver.rewriteFile(newFile, texLines);
+		saver.rewriteFile(newTexFile, texLines);
 		
 		
 
